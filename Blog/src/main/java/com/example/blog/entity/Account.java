@@ -13,5 +13,4 @@ public class Account {
     String userName;
     String account;
     String passoword;
-
 }

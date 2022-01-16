@@ -1,7 +1,7 @@
 package com.example.blog.config;
 
 import com.example.blog.controller.AccountController;
-import com.example.blog.dao.AccountDao;
+import com.example.blog.dao.Mappers.AccountMapper;
 import com.example.blog.entity.Account;
 import com.example.blog.service.AccountService;
 import org.springframework.context.annotation.Bean;
@@ -29,21 +29,4 @@ public class AccountConfig {
         return new AccountService();
     }
 
-    /**
-     * Controller
-     * @return
-     */
-    @Bean
-    public AccountController getAccountController(){
-        return new AccountController();
-    }
-
-    /**
-     * Dao
-     * @return
-     */
-    @Bean
-    public AccountDao getAccountDao(){
-        return new AccountDao();
-    }
 }

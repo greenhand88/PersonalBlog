@@ -18,12 +18,23 @@ public class AccountController {
     /**
      *
      * @param login
-     * @return
+     * @return token
      */
     @PostMapping("/login")
     @ResponseBody
     public boolean isPass(@RequestBody Login login){
         return accountService.isPass(login.getAccount(),login.getPassword());
+    }
+
+    /**
+     *
+     * @param login
+     * @return isSucceed
+     */
+    @PostMapping("/register")
+    @ResponseBody
+    public boolean registerAccount(@RequestBody Login login){
+        return accountService.registerAccount(login.getAccount(),login.getPassword());
     }
 
 }

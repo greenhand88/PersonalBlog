@@ -1,9 +1,11 @@
 package com.example.blog.service;
 
 import com.example.blog.dao.Mappers.AccountMapper;
+import com.example.blog.tools.Token;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,24 +13,31 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService {
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
     /**
      *
      * @param account
      * @param password
      * @return token
      */
-    public boolean isPass(String account,String password){
+    public String isPass(String account,String password){
+//        redisTemplate.opsForValue().set(account,password);
+//        System.out.println(redisTemplate.opsForValue().get(account));
+//        return true;
+        String token="";
         try(SqlSession sqlSession = sqlSessionFactory.openSession()){
             AccountMapper accountMapper=sqlSession.getMapper(AccountMapper.class);
-            if(accountMapper.getPassword(account).equals(password))
-                return true;
-            else
-                return false;
+            if(accountMapper.getPassword(account).equals(password)) {
+                token = Token.getToken(account, password);
+                redisTemplate.opsForValue().set(token,account);
+                System.out.println(redisTemplate.opsForValue().get(token));
+            }
         }catch (Exception e){
             System.out.println("AccountService Error");
             e.printStackTrace();
-            return false;
+        }finally {
+            return token;
         }
     }
 

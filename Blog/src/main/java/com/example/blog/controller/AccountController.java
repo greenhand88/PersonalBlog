@@ -22,7 +22,7 @@ public class AccountController {
      */
     @PostMapping("/login")
     @ResponseBody
-    public boolean isPass(@RequestBody Login login){
+    public String isPass(@RequestBody Login login){
         return accountService.isPass(login.getAccount(),login.getPassword());
     }
 

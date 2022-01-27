@@ -23,7 +23,12 @@ public class AccountController {
     @PostMapping("/login")
     @ResponseBody
     public String isPass(@RequestBody Login login){
-        return accountService.isPass(login.getAccount(),login.getPassword());
+        try {
+            return accountService.isPass(login.getAccount(), login.getPassword());
+        }catch (Exception e){
+            e.printStackTrace();
+            return "Password Error";
+        }
     }
 
     /**
@@ -34,7 +39,12 @@ public class AccountController {
     @PostMapping("/register")
     @ResponseBody
     public boolean registerAccount(@RequestBody Login login){
-        return accountService.registerAccount(login.getAccount(),login.getPassword());
+        try{
+            return accountService.registerAccount(login.getAccount(),login.getPassword());
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

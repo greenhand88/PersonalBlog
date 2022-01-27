@@ -9,36 +9,31 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.TimeUnit;
+
 @Service
 public class AccountService {
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String,Object> redisTemplate;
     /**
      *
      * @param account
      * @param password
      * @return token
      */
-    public String isPass(String account,String password){
-//        redisTemplate.opsForValue().set(account,password);
-//        System.out.println(redisTemplate.opsForValue().get(account));
-//        return true;
-        String token="";
-        try(SqlSession sqlSession = sqlSessionFactory.openSession()){
-            AccountMapper accountMapper=sqlSession.getMapper(AccountMapper.class);
-            if(accountMapper.getPassword(account).equals(password)) {
-                token = Token.getToken(account, password);
-                redisTemplate.opsForValue().set(token,account);
-                System.out.println(redisTemplate.opsForValue().get(token));
-            }
-        }catch (Exception e){
-            System.out.println("AccountService Error");
-            e.printStackTrace();
-        }finally {
+    @Transactional
+    public String isPass(String account,String password)throws Exception{
+        if(password.equals((String)redisTemplate.opsForValue().get(account))){
+            String token="";
+            token = Token.getToken(account, password);
+            redisTemplate.opsForHash().put(token," account",account);
+            redisTemplate.expire(token,30*60, TimeUnit.SECONDS);
             return token;
         }
+        else
+            return "Password Error";
     }
 
     /**
@@ -48,19 +43,8 @@ public class AccountService {
      * @return isSucceed
      */
     @Transactional
-    public boolean registerAccount(String account,String password){
-        try(SqlSession sqlSession = sqlSessionFactory.openSession(true)){//打开自动提交
-            AccountMapper accountMapper=sqlSession.getMapper(AccountMapper.class);
-            if(accountMapper.isExisted(account)!=null) {
-                System.out.println("Account is already exist!");
-                return false;
-            }
-            accountMapper.register(account,password);
-            return true;
-        }catch (Exception e){
-            System.out.println("RegisterAccount Fail");
-            e.printStackTrace();
-            return false;
-        }
+    public boolean registerAccount(String account,String password)throws Exception{
+        redisTemplate.opsForValue().set(account,password);
+        return true;
     }
 }

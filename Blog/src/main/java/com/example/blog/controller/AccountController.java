@@ -1,5 +1,6 @@
 package com.example.blog.controller;
 
+import com.example.blog.VO.ChangePassword;
 import com.example.blog.VO.Login;
 import com.example.blog.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,17 @@ public class AccountController {
         }catch (Exception e){
             e.printStackTrace();
             return false;
+        }
+    }
+
+    @PostMapping("/changePassword")
+    @ResponseBody
+    public String changePassword(@RequestBody ChangePassword changePassword){
+        try{
+            return accountService.changePassword(changePassword.getAccount(), changePassword.getOldPassword(), changePassword.getNewPassword());
+        }catch (Exception e){
+            e.printStackTrace();
+            return "密码修改失败";
         }
     }
 

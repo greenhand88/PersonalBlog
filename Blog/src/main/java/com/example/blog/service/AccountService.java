@@ -44,7 +44,31 @@ public class AccountService {
      */
     @Transactional
     public boolean registerAccount(String account,String password)throws Exception{
-        redisTemplate.opsForValue().set(account,password);
+        if(!redisTemplate.hasKey(account))
+            redisTemplate.opsForValue().set(account,password);
+        else
+            return false;
         return true;
+    }
+
+    /**
+     *
+     * @param account
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    @Transactional
+    public String changePassword(String account,String oldPassword,String newPassword){
+        if(newPassword.equals(oldPassword))
+            return "新密码不能与旧密码相同";
+        if(redisTemplate.hasKey(account)&&oldPassword.equals((String) redisTemplate.opsForValue().get(account))) {
+            String token = Token.getToken(account, oldPassword);
+            redisTemplate.opsForValue().set(account,newPassword);
+            redisTemplate.delete(token);
+        }
+        else
+            return "密码修改失败";
+        return "密码修改成功";
     }
 }

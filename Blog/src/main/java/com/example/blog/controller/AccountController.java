@@ -2,6 +2,7 @@ package com.example.blog.controller;
 
 import com.example.blog.VO.ChangePassword;
 import com.example.blog.VO.Login;
+import com.example.blog.entity.Account;
 import com.example.blog.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,14 +35,14 @@ public class AccountController {
 
     /**
      *
-     * @param login
+     * @param account
      * @return isSucceed
      */
     @PostMapping("/register")
     @ResponseBody
-    public boolean registerAccount(@RequestBody Login login){
+    public boolean registerAccount(@RequestBody Account account){
         try{
-            return accountService.registerAccount(login.getAccount(),login.getPassword());
+            return accountService.registerAccount(account.getAccount(),account.getPassword(),account.getUserName());
         }catch (Exception e){
             e.printStackTrace();
             return false;

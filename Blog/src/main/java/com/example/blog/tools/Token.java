@@ -15,7 +15,7 @@ public class Token {
     private static final long EXPIRE_DATE=30*60*10000;
     //私钥
     private static final String TOKEN_SECRET = "ZCfasfhuaUUHufguZZJNB20220122";
-    public static String getToken(String account,String password){
+    public static String getToken(String account,String userName){
         String token="";
         try {
             //过期时间
@@ -30,7 +30,8 @@ public class Token {
             token = JWT.create()
                     .withHeader(header)
                     .withClaim("account",account)
-                    .withClaim("password",password).withExpiresAt(date)
+                    .withClaim("userName",userName)
+                    .withExpiresAt(date)
                     .sign(algorithm);
         }catch (Exception e){
             e.printStackTrace();

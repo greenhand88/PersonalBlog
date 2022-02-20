@@ -2,14 +2,15 @@ package com.example.blog.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class Account {
-    String userName;
-    String account;
-    String password;
+public class Article {
+    String id;
+    String author;
+    String title;
+    Date uploadTime;
 }

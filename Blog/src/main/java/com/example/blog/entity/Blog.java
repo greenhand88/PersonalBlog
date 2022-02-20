@@ -2,14 +2,13 @@ package com.example.blog.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class Account {
-    String userName;
+public class Blog {
     String account;
-    String password;
+    List<String>articles;
 }

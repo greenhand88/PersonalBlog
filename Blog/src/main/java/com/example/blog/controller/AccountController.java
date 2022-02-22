@@ -49,6 +49,11 @@ public class AccountController {
         }
     }
 
+    /**
+     *
+     * @param changePassword
+     * @return
+     */
     @PostMapping("/changePassword")
     @ResponseBody
     public String changePassword(@RequestBody ChangePassword changePassword){

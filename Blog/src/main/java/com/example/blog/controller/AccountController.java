@@ -58,7 +58,7 @@ public class AccountController {
     @ResponseBody
     public String changePassword(@RequestBody ChangePassword changePassword){
         try{
-            return accountService.changePassword(changePassword.getAccount(), changePassword.getOldPassword(), changePassword.getNewPassword());
+            return accountService.changePassword(changePassword.getAccount(), changePassword.getNewPassword());
         }catch (Exception e){
             e.printStackTrace();
             return "密码修改失败";

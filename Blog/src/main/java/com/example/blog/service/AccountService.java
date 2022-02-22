@@ -1,6 +1,7 @@
 package com.example.blog.service;
 
 //import com.example.blog.dao.Mappers.AccountMapper;
+import com.example.blog.dao.Mappers.AccountMapper;
 import com.example.blog.tools.Token;
 //import org.apache.ibatis.session.SqlSession;
 //import org.apache.ibatis.session.SqlSessionFactory;
@@ -13,10 +14,11 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class AccountService {
-//    @Autowired
-//    private SqlSessionFactory sqlSessionFactory;
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
+    @Autowired
+    private AccountMapper accountMapper;
+
     /**
      *
      * @param account
@@ -24,10 +26,11 @@ public class AccountService {
      * @return token
      */
     public String isPass(String account,String password)throws Exception{
-        if(password.equals((String)redisTemplate.opsForHash().get(account,"password"))){
-            String userName=redisTemplate.opsForHash().get(account,"userName").toString();
+        String s=accountMapper.getPassword(account);
+        if(password.equals(s)){
+            String userName=accountMapper.getUserName(account);
             String token = Token.getToken(account,userName);
-
+            redisTemplate.opsForValue().set(token,account,60*30,TimeUnit.SECONDS);
             return token;
         }
         else
@@ -42,10 +45,8 @@ public class AccountService {
      */
     @Transactional
     public boolean registerAccount(String account,String password,String userName)throws Exception{
-        if(!redisTemplate.hasKey(account)) {
-            redisTemplate.opsForHash().put(account, "password", password);
-            redisTemplate.opsForHash().put(account, "userName", userName);
-        }
+        if(accountMapper.getUserName(account)==null)
+            accountMapper.register(account,password,userName);
         else
             return false;
         return true;
@@ -54,17 +55,13 @@ public class AccountService {
     /**
      *
      * @param account
-     * @param oldPassword
      * @param newPassword
      * @return
      */
     @Transactional
-    public String changePassword(String account,String oldPassword,String newPassword){
-        if(newPassword.equals(oldPassword))
-            return "新密码不能与旧密码相同";
-        if(redisTemplate.hasKey(account)&&oldPassword.equals((String) redisTemplate.opsForHash().get(account,"password"))) {
-            redisTemplate.opsForHash().put(account,"password",newPassword);
-        }
+    public String changePassword(String account,String newPassword){
+        if(!accountMapper.getPassword(account).equals(newPassword))
+            accountMapper.changePassword(account,newPassword);
         else
             return "密码修改失败";
         return "密码修改成功";

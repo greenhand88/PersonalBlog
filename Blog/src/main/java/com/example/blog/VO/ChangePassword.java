@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChangePassword {
     String account;
-    String oldPassword;
     String newPassword;
 }

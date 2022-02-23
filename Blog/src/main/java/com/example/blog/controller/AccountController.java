@@ -6,10 +6,7 @@ import com.example.blog.entity.Account;
 import com.example.blog.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/account")
 @Controller
@@ -63,6 +60,23 @@ public class AccountController {
             e.printStackTrace();
             return "密码修改失败";
         }
+    }
+
+    /**
+     *
+     * @param token
+     * @return
+     */
+    @PostMapping("/api/token")
+    @ResponseBody
+    public boolean vertifyToken(@RequestHeader String token){
+        return accountService.vertifyToken(token);
+    }
+
+    @PostMapping("/api/getAccount")
+    @ResponseBody
+    public String getAccount(@RequestHeader String token){
+        return accountService.getAccountByToken(token);
     }
 
 }

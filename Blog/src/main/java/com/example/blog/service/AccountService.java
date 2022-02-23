@@ -66,4 +66,20 @@ public class AccountService {
             return "密码修改失败";
         return "密码修改成功";
     }
+
+    /**
+     *
+     * @param token
+     * @return
+     */
+    public boolean vertifyToken(String token){
+        if(redisTemplate.opsForValue().get(token)!=null)
+            return true;
+        else
+            return false;
+    }
+
+    public String getAccountByToken(String token){
+        return redisTemplate.opsForValue().get(token).toString();
+    }
 }

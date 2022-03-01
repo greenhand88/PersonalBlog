@@ -2,12 +2,13 @@ package com.example.blog.controller;
 
 import com.example.blog.VO.ChangePassword;
 import com.example.blog.VO.Login;
+import com.example.blog.VO.Result;
 import com.example.blog.entity.Account;
 import com.example.blog.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin
 @RequestMapping("/account")
 @Controller
 public class AccountController {
@@ -21,12 +22,12 @@ public class AccountController {
      */
     @PostMapping("/login")
     @ResponseBody
-    public String isPass(@RequestBody Login login){
+    public Result isPass(@RequestBody Login login){
         try {
             return accountService.isPass(login.getAccount(), login.getPassword());
         }catch (Exception e){
             e.printStackTrace();
-            return "Password Error";
+            return new Result(new String(),false,"Exception!");
         }
     }
 

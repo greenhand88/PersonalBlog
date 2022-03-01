@@ -1,10 +1,8 @@
 package com.example.blog.service;
 
-//import com.example.blog.dao.Mappers.AccountMapper;
+import com.example.blog.VO.Result;
 import com.example.blog.dao.Mappers.AccountMapper;
 import com.example.blog.tools.Token;
-//import org.apache.ibatis.session.SqlSession;
-//import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -25,16 +23,16 @@ public class AccountService {
      * @param password
      * @return token
      */
-    public String isPass(String account,String password)throws Exception{
+    public Result isPass(String account, String password)throws Exception{
         String s=accountMapper.getPassword(account);
         if(password.equals(s)){
             String userName=accountMapper.getUserName(account);
             String token = Token.getToken(account,userName);
             redisTemplate.opsForValue().set(token,account,60*30,TimeUnit.SECONDS);
-            return token;
+            return new Result(token,true,"Success!");
         }
         else
-            return "Password Error";
+            return new Result(new String(),false,"Fail!");
     }
 
     /**

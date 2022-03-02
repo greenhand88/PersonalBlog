@@ -29,10 +29,10 @@ public class AccountService {
             String userName=accountMapper.getUserName(account);
             String token = Token.getToken(account,userName);
             redisTemplate.opsForValue().set(token,account,60*30,TimeUnit.SECONDS);
-            return new Result(token,"200",true,"Success!");
+            return new Result(token,"200",true,"登录成功!");
         }
         else
-            return new Result(new String(),"300",false,"Fail!");
+            return new Result(new String(),"300",false,"密码错误,请重新输入!");
     }
 
     /**
@@ -70,11 +70,11 @@ public class AccountService {
      * @param token
      * @return
      */
-    public boolean vertifyToken(String token){
+    public Result vertifyToken(String token){
         if(redisTemplate.opsForValue().get(token)!=null)
-            return true;
+            return new Result(token,"200",true,"免密码登录成功");
         else
-            return false;
+            return new Result(token,"350",false,"令牌失效,请重新登录!");
     }
 
     public String getAccountByToken(String token){

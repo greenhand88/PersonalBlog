@@ -70,14 +70,14 @@ public class AccountController {
      */
     @PostMapping("/api/token")
     @ResponseBody
-    public boolean vertifyToken(@RequestHeader String token){
+    public Result vertifyToken(@RequestHeader String token){
         return accountService.vertifyToken(token);
     }
 
     @PostMapping("/api/getAccount")
     @ResponseBody
-    public String getAccount(@RequestHeader String token){
-        return accountService.getAccountByToken(token);
+    public String getAccount(@RequestHeader String Authority){
+        return accountService.getAccountByToken(Authority);
     }
 
 }

@@ -8,7 +8,7 @@ import com.example.blog.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin
+@CrossOrigin(maxAge = 3600)
 @RequestMapping("/account")
 @Controller
 public class AccountController {
@@ -27,7 +27,7 @@ public class AccountController {
             return accountService.isPass(login.getAccount(), login.getPassword());
         }catch (Exception e){
             e.printStackTrace();
-            return new Result(new String(),false,"Exception!");
+            return new Result(new String(), "404",false,"Exception!");
         }
     }
 

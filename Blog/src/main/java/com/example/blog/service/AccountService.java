@@ -29,10 +29,10 @@ public class AccountService {
             String userName=accountMapper.getUserName(account);
             String token = Token.getToken(account,userName);
             redisTemplate.opsForValue().set(token,account,60*30,TimeUnit.SECONDS);
-            return new Result(token,true,"Success!");
+            return new Result(token,"200",true,"Success!");
         }
         else
-            return new Result(new String(),false,"Fail!");
+            return new Result(new String(),"300",false,"Fail!");
     }
 
     /**

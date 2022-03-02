@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class Result {
     String token;
+    String code;
     boolean pass;
     String message;
 }

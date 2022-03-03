@@ -71,7 +71,7 @@ public class AccountService {
      * @return
      */
     public Result vertifyToken(String token){
-        if(redisTemplate.opsForValue().get(token)!=null)
+        if(redisTemplate.opsForValue().get(token)!="")
             return new Result(token,"200",true,"免密码登录成功");
         else
             return new Result(token,"350",false,"令牌失效,请重新登录!");

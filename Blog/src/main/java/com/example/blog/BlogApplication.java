@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
-@SpringBootApplication
+@SpringBootApplication()
 @MapperScan("com.example.blog.dao")
 
 public class BlogApplication {

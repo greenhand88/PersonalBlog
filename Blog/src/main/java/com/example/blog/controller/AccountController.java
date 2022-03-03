@@ -2,13 +2,15 @@ package com.example.blog.controller;
 
 import com.example.blog.VO.ChangePassword;
 import com.example.blog.VO.Login;
+import com.example.blog.VO.RequestToken;
 import com.example.blog.VO.Result;
 import com.example.blog.entity.Account;
 import com.example.blog.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin(maxAge = 3600)
+
+@CrossOrigin
 @RequestMapping("/account")
 @Controller
 public class AccountController {
@@ -70,14 +72,14 @@ public class AccountController {
      */
     @PostMapping("/api/token")
     @ResponseBody
-    public Result vertifyToken(@RequestHeader String token){
+    public Result vertifyToken(@RequestBody String token){
         return accountService.vertifyToken(token);
     }
 
     @PostMapping("/api/getAccount")
     @ResponseBody
-    public String getAccount(@RequestHeader String Authority){
-        return accountService.getAccountByToken(Authority);
+    public String getAccount(@RequestBody RequestToken token){
+        return accountService.getAccountByToken(token.getToken());
     }
 
 }

@@ -40,15 +40,14 @@ public class AccountController {
      */
     @PostMapping("/register")
     @ResponseBody
-    public boolean registerAccount(@RequestBody Account account){
+    public Result registerAccount(@RequestBody Account account){
         try{
             return accountService.registerAccount(account.getAccount(),account.getPassword(),account.getUserName());
         }catch (Exception e){
             e.printStackTrace();
-            return false;
+            return new Result("","420",false,"账号已存在!请重新注册!");
         }
     }
-
     /**
      *
      * @param changePassword

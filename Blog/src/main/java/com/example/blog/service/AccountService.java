@@ -42,12 +42,12 @@ public class AccountService {
      * @return isSucceed
      */
     @Transactional
-    public boolean registerAccount(String account,String password,String userName)throws Exception{
-        if(accountMapper.getUserName(account)==null)
+    public Result registerAccount(String account,String password,String userName)throws Exception{
+        if(accountMapper.getUserName(account)==null||accountMapper.getUserName(account)=="")
             accountMapper.register(account,password,userName);
         else
-            return false;
-        return true;
+            return new Result("","360",false,"账号已存在!请重新注册!");
+        return new Result("","200",false,"注册成功!");
     }
 
     /**
@@ -71,7 +71,7 @@ public class AccountService {
      * @return
      */
     public Result vertifyToken(String token){
-        if(redisTemplate.opsForValue().get(token)!="")
+        if(redisTemplate.opsForValue().get(token)!=""&&redisTemplate.opsForValue().get(token)!=null)
             return new Result(token,"200",true,"免密码登录成功");
         else
             return new Result(token,"350",false,"令牌失效,请重新登录!");

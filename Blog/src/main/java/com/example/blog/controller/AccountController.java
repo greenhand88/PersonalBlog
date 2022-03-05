@@ -2,8 +2,8 @@ package com.example.blog.controller;
 
 import com.example.blog.VO.ChangePassword;
 import com.example.blog.VO.Login;
-import com.example.blog.VO.RequestToken;
 import com.example.blog.VO.Result;
+import com.example.blog.VO.TokenPermission;
 import com.example.blog.entity.Account;
 import com.example.blog.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,67 +18,69 @@ public class AccountController {
     AccountService accountService;
 
     /**
-     *
      * @param login
      * @return token
      */
     @PostMapping("/login")
     @ResponseBody
-    public Result isPass(@RequestBody Login login){
+    public Result isPass(@RequestBody Login login) {
         try {
             return accountService.isPass(login.getAccount(), login.getPassword());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return new Result(new String(), "404",false,"Exception!");
+            return new Result(new String(), "404", false, "Exception!");
         }
     }
 
     /**
-     *
      * @param account
      * @return isSucceed
      */
     @PostMapping("/register")
     @ResponseBody
-    public Result registerAccount(@RequestBody Account account){
-        try{
-            return accountService.registerAccount(account.getAccount(),account.getPassword(),account.getUserName());
-        }catch (Exception e){
+    public Result registerAccount(@RequestBody Account account) {
+        try {
+            return accountService.registerAccount(account.getAccount(), account.getPassword(), account.getUserName());
+        } catch (Exception e) {
             e.printStackTrace();
-            return new Result("","420",false,"账号已存在!请重新注册!");
+            return new Result("", "420", false, "账号已存在!请重新注册!");
         }
     }
+
     /**
-     *
      * @param changePassword
      * @return
      */
     @PostMapping("/changePassword")
     @ResponseBody
-    public String changePassword(@RequestBody ChangePassword changePassword){
-        try{
-            return accountService.changePassword(changePassword.getAccount(), changePassword.getNewPassword());
-        }catch (Exception e){
+    public Result changePassword(@RequestBody ChangePassword changePassword) {
+        try {
+            return accountService.changePassword(changePassword.getAccount(), changePassword.getOldPassword(), changePassword.getNewPassword());
+        } catch (Exception e) {
             e.printStackTrace();
-            return "密码修改失败";
+            return new Result("", "404", false, "连接断开,密码修改失败!");
         }
     }
 
     /**
-     *
-     * @param token
+     * @param tokenPermission
      * @return
      */
     @PostMapping("/api/token")
     @ResponseBody
-    public Result vertifyToken(@RequestBody String token){
-        return accountService.vertifyToken(token);
+    public Result vertifyToken(@RequestBody TokenPermission tokenPermission) {
+        return accountService.vertifyToken(tokenPermission.getToken());
     }
 
+    /**
+     *
+     * @param tokenPermission
+     * @return
+     */
     @PostMapping("/api/getAccount")
     @ResponseBody
-    public String getAccount(@RequestBody RequestToken token){
-        return accountService.getAccountByToken(token.getToken());
+    public Result getAccount(@RequestBody TokenPermission tokenPermission) {
+        return accountService.getAccountByToken(tokenPermission.getToken());
     }
 
 }

@@ -13,19 +13,21 @@ import org.springframework.context.annotation.Configuration;
 public class AccountConfig {
     /**
      * Entity
+     *
      * @return
      */
     @Bean
-    public Account getAccount(){
+    public Account getAccount() {
         return new Account();
     }
 
     /**
      * Service
+     *
      * @return
      */
     @Bean
-    public AccountService getAccountService(){
+    public AccountService getAccountService() {
         return new AccountService();
     }
 

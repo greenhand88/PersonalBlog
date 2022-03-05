@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface AccountMapper {
     /**
      * getPassword
+     *
      * @param account
      * @return password
      */
@@ -17,6 +18,7 @@ public interface AccountMapper {
 
     /**
      * getUserName
+     *
      * @param account
      * @return userName
      */
@@ -25,19 +27,21 @@ public interface AccountMapper {
 
     /**
      * register
+     *
      * @param account
      * @param password
      */
     @Insert("insert into account(account,password,userName) values(#{account},#{password},#{userName})")
-    public void register(String account,String password,String userName);
+    public void register(String account, String password, String userName);
 
     /**
      * changePassword
+     *
      * @param account
      * @param password
      */
     @Update("update account set password ={#newPassword} where account=#{account}")
-    public void changePassword(String account,String password);
+    public void changePassword(String account, String password);
 
 
 }

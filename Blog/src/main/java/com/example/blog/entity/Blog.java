@@ -12,5 +12,5 @@ import java.util.List;
 @ApiModel
 public class Blog {
     String account;
-    List<String>articles;
+    List<String> articles;
 }

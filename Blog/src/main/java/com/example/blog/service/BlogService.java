@@ -12,15 +12,15 @@ import java.util.Date;
 public class BlogService {
     @Autowired
     private ArticleMapper articleMapper;
+
     /**
-     *
      * @param title
      * @param author
      * @return
      */
-    public String addArticle(String title,String author){
+    public String addArticle(String title, String author) {
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        articleMapper.addArticle(title,date,author);
+        articleMapper.addArticle(title, date, author);
         return "True";
     }
 }

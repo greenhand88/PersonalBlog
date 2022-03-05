@@ -16,9 +16,10 @@ import java.util.Date;
 public class BlogController {
     @Autowired
     BlogService blogService;
+
     @PostMapping("/addArticle")
     @ResponseBody
-    public String addArticle(@RequestBody ArticleInfo articleInfo){
-        return blogService.addArticle(articleInfo.getTitle(),articleInfo.getAuthor());
+    public String addArticle(@RequestBody ArticleInfo articleInfo) {
+        return blogService.addArticle(articleInfo.getTitle(), articleInfo.getAuthor());
     }
 }

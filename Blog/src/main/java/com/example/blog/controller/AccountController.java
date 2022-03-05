@@ -83,4 +83,27 @@ public class AccountController {
         return accountService.getAccountByToken(tokenPermission.getToken());
     }
 
+    /**
+     *
+     * @param tokenPermission
+     * @return
+     */
+    @PostMapping("/api/getUserName")
+    @ResponseBody
+    public Result getUserName(@RequestBody TokenPermission tokenPermission) {
+        return accountService.getUserNameByToken(tokenPermission.getToken());
+    }
+
+    /**
+     *
+     *
+     * @param tokenPermission
+     * @return
+     */
+    @PostMapping("/api/signOut")
+    @ResponseBody
+    public Result signOut(@RequestBody TokenPermission tokenPermission) {
+        return accountService.signOut(tokenPermission.getToken());
+    }
+
 }

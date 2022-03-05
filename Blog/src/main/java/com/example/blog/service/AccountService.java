@@ -76,9 +76,35 @@ public class AccountService {
             return new Result(token, "350", false, "令牌失效,请重新登录!");
     }
 
+    /**
+     *
+     * @param token
+     * @return
+     */
     public Result getAccountByToken(String token) {
 //        System.out.println(token);
 //        System.out.println( redisTemplate.opsForValue().get(token));
         return new Result(token,"200",true,(String)redisTemplate.opsForValue().get(token));
+    }
+
+    /**
+     *
+     * @param token
+     * @return
+     */
+    public Result getUserNameByToken(String token) {
+//        System.out.println(token);
+//        System.out.println( redisTemplate.opsForValue().get(token));
+        return new Result(token,"200",true,accountMapper.getUserName((String)redisTemplate.opsForValue().get(token)));
+    }
+
+    /**
+     *
+     * @param token
+     * @return
+     */
+    public Result signOut(String token){
+        redisTemplate.delete(token);
+        return new Result("","200",false,"登出成功");
     }
 }
